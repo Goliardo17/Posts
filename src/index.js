@@ -10,6 +10,8 @@ import { EditPost } from './pages/posts/edit/index.jsx';
 import { AddPost } from './pages/posts/add/index.jsx';
 import { Auth } from './pages/auth/index.jsx';
 import { Registration } from './pages/registration/index.jsx';
+import { Provider } from 'react-redux';
+import { store } from './redux/store.js';
 
 const router = createBrowserRouter([
   {
@@ -47,7 +49,9 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
 
