@@ -1,52 +1,57 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {App} from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Posts } from './pages/posts/index.jsx';
-import { Root } from './components/root';
-import { DetailPost } from './pages/posts/detail/index.jsx';
-import { EditPost } from './pages/posts/edit/index.jsx';
-import { AddPost } from './pages/posts/add/index.jsx';
-import { Auth } from './pages/auth/index.jsx';
-import { Registration } from './pages/registration/index.jsx';
+import { App } from "./App"
+import { PostsPage } from './pages/posts/index.jsx';
+import { Root } from './components/root/index.jsx';
+import { DetailPostPage } from './pages/posts/detail/index.jsx';
+import { EditPostPage } from './pages/posts/edit/index.jsx';
+import { AddPostPage } from './pages/posts/add/index.jsx';
+import { AuthPage } from './pages/auth/index.jsx';
+import { RegistrationPage } from './pages/registration/index.jsx';
 import { Provider } from 'react-redux';
-import { store } from './redux/store.js';
+import store from './redux/store.js';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
-    childrens: [
+    children: [
+      {
+        index: true,
+        element: <App />
+      },
       {
         path: "posts",
-        element: <Posts />
+        element: <PostsPage />
       },
       {
         path: 'posts/:id',
-        element: <DetailPost />
+        element: <DetailPostPage />
       },
       {
         path: 'posts/:id/edit',
-        element: <EditPost />,
+        element: <EditPostPage />,
       },
       {
         path: 'posts/add',
-        element: <AddPost />,
+        element: <AddPostPage />,
       },
       {
         path: 'auth',
-        element: <Auth />,
+        element: <AuthPage />,
       },
       {
         path: 'registration',
-        element: <Registration />,
+        element: <RegistrationPage />,
       }
     ]
   }
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
