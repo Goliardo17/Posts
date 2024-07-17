@@ -1,16 +1,28 @@
 import React from "react";
 import { Container } from "../../components/root/container";
 import { Posts } from "../../components/posts";
-import * as SC from "./styled"
-import { useSelector } from "react-redux";
+import * as SC from "./styled";
+import { useDispatch, useSelector } from "react-redux";
+import { getPosts } from "../../redux/slices/postsSlice";
 
 export const PostsPage = () => {
-  const posts = useSelector((state) => state.posts.list)
-  
+  const { list, loading } = useSelector((state) => state.posts.posts);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getPosts());
+  }, []);
+
   return (
     <Container>
-      <SC.Title>Posts</SC.Title>
-      <Posts posts={posts}/>
+      {!loading ? (
+        <>
+          <SC.Title>Posts</SC.Title>
+          <Posts posts={list} />
+        </>
+      ) : (
+        <>Loading...</>
+      )}
     </Container>
-  )
+  );
 };

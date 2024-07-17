@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFreshPosts } from "../../redux/slices/postsSlice";
 
 export const MainPage = () => {
-  const freshPosts = useSelector((state) => state.posts.freshPosts)
+  const {list, loading} = useSelector((state) => state.posts.freshPosts)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -16,10 +16,10 @@ export const MainPage = () => {
   return (
     <Container>
       {
-        freshPosts ?
+        !loading ?
         <>
           <SC.Title>Posts</SC.Title>
-          <Posts posts={freshPosts}/>
+          <Posts posts={list}/>
         </>
         : null
       }
