@@ -5,10 +5,11 @@ import { Container } from "../../../components/root/container";
 import { Link } from "../../../components/Link";
 import * as SC from "./styles";
 import { useDispatch, useSelector } from "react-redux";
-import { getPostById } from "../../../redux/slices/postsSlice";
+import { getPostById, showPost } from "../../../redux/slices/postsSlice";
 
 export const DetailPostPage = () => {
   const { id } = useParams();
+  const posts = useSelector((state) =>state.posts.posts.list)
   const { post, loading } = useSelector((state) => state.posts.postForView);
   const dispatch = useDispatch();
 
@@ -16,8 +17,14 @@ export const DetailPostPage = () => {
 
 
   useEffect(() => {
-    dispatch(getPostById(id));
-  }, []);
+    const intId = Number(id)
+    const findedPosts = posts ? posts.find((item) => item.id === id) : undefined
+    if (findedPosts) {
+      dispatch(showPost(findedPosts))
+    } else {
+      dispatch(getPostById(intId));
+    }
+  }, [id, list, dispatch]);
 
   return (
     <Container>
@@ -28,6 +35,7 @@ export const DetailPostPage = () => {
           <SC.Text>{post.text}</SC.Text>
           <div style={{ clear: "both" }}></div>
           <Link to="/posts">Back to posts</Link>
+          <Link to={`/posts/${id}/edit`}>Edit post</Link>
         </>
       ) : (
         <>Loading...</>

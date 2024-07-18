@@ -75,8 +75,28 @@ export const postsSlice = createSlice({
     },
   },
   reducers: {
-    editPosts: (state, action) => {},
-    addPost: (state, action) => {},
+    editPosts: (state, action) => {
+      state.posts.list = state.posts.list.map((item) => {
+        if (post.id === action.payload.id) {
+          return action.payload;
+        }
+
+        return post;
+      });
+    },
+    addPost: (state, action) => {
+      const newPost = { ...action.payload };
+      newPost.id = new Date().getTime();
+      state.posts.list = state.posts.list
+        ? [newPost, ...state.posts.list]
+        : [newPost];
+    },
+    showPost: (state, action) => {
+      state.postForView = {
+        post: action.payload,
+        loading: false,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -113,6 +133,6 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { editPosts, addPost } = postsSlice.actions;
+export const { editPosts, addPost, showPost } = postsSlice.actions;
 
 export default postsSlice.reducer;

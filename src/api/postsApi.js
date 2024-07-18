@@ -23,7 +23,7 @@ export const postApi = {
   },
   fetchPosts: async () => {
     try {
-      return await fetch(`https://jsonplaceholder.typicode.com/posts?_sort=id&_order=desc`)
+      return await fetch(`https://jsonplaceholder.typicode.com/posts?_sort=id&_order=desc&_limit=3`)
         .then((response) => response.json())
         .then((posts) => posts);
     } catch (ex) {

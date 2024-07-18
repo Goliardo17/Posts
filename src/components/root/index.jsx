@@ -10,6 +10,7 @@ export const Root = () => {
         <SC.Menu>
           <SC.MenuItem to={"/"}>Main</SC.MenuItem>
           <SC.MenuItem to={"/posts"}>Posts</SC.MenuItem>
+          <SC.MenuItem to={"/posts/add"}>Create post</SC.MenuItem>
           <SC.MenuItem to={"/auth"}>Authtorization</SC.MenuItem>
           <SC.MenuItem to={"/registation"}>Registration</SC.MenuItem>
         </SC.Menu>
