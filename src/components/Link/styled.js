@@ -5,6 +5,7 @@ const LinkStyle = css`
   font-size: 16px;
   text-decoration: none;
   color: black;
+  align-items: center;
 
   &.active {
     color: darkred;

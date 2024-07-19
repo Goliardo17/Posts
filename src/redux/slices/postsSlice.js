@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { postApi } from "../../api/postsApi";
+import { initionalPosts } from "./constants/posts";
 
 export const getPostById = createAsyncThunk("posts/fetchById", async (id) => {
   const response = await postApi.fetchById(id);
@@ -26,43 +27,7 @@ export const postsSlice = createSlice({
   name: "posts",
   initialState: {
     posts: {
-      list: [
-        {
-          id: 1,
-          title: "post 1",
-          image:
-            "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.jpg",
-          text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique, aspernatur.",
-        },
-        {
-          id: 2,
-          title: "post 2",
-          image:
-            "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.jpg",
-          text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique, aspernatur.",
-        },
-        {
-          id: 3,
-          title: "post 3",
-          image:
-            "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.jpg",
-          text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique, aspernatur.",
-        },
-        {
-          id: 4,
-          title: "post 4",
-          image:
-            "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.jpg",
-          text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique, aspernatur.",
-        },
-        {
-          id: 5,
-          title: "post 5",
-          image:
-            "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.jpg",
-          text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique, aspernatur.",
-        },
-      ],
+      list: initionalPosts,
       loading: false,
     },
     postForView: {
@@ -97,6 +62,13 @@ export const postsSlice = createSlice({
         loading: false,
       };
     },
+    deletePost: (state, action) => {
+      state.posts.list = state.posts.list.filter((post) => post.id !== action.payload.id)
+      state.postForView = {
+        post: null,
+        loading: false
+      }
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -133,6 +105,6 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { editPosts, addPost, showPost } = postsSlice.actions;
+export const { editPosts, addPost, showPost, deletePost } = postsSlice.actions;
 
 export default postsSlice.reducer;
