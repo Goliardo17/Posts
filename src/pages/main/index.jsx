@@ -11,7 +11,7 @@ export const MainPage = () => {
 
   useEffect(() => {
     dispatch(getFreshPosts())
-  }, [])
+  }, [dispatch])
 
   return (
     <Container>
