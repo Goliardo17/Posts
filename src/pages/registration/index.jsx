@@ -1,6 +1,9 @@
-import React from "react";
-import { Typo } from "../../components/typo";
-import { Container } from "../../components/root/container";
+import React, { useState } from "react";
+import { Form } from "../../components/ui/form"
+import { Field } from "../../components/ui/field"
+import { Input } from "../../components/ui/input"
+import { Typo } from "../../components/ui/typo";
+import { Container } from "../../components/ui/container";
 import { useNavigate } from "react-router-dom";
 
 export const RegistrationPage = () => {
@@ -70,7 +73,7 @@ export const RegistrationPage = () => {
             name="surname"
             placeholder="Surname"
             value={formValues.surname}
-            onChange={(e) => onChange(e.target.surname, e.target.value)}
+            onChange={(e) => onChange(e.target.name, e.target.value)}
           />
           </Field>
           <Field>
@@ -79,7 +82,7 @@ export const RegistrationPage = () => {
             name="email"
             placeholder="Email"
             value={formValues.email}
-            onChange={(e) => onChange(e.target.email, e.target.value)}
+            onChange={(e) => onChange(e.target.name, e.target.value)}
           />
           </Field>
           <Field>
@@ -88,7 +91,7 @@ export const RegistrationPage = () => {
             name="password"
             placeholder="Password"
             value={formValues.password}
-            onChange={(e) => onChange(e.target.password, e.target.value)}
+            onChange={(e) => onChange(e.target.name, e.target.value)}
           />
           </Field>
           <button type="submit" disabled={disabled}>

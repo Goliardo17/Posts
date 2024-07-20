@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Typo } from "../../../components/typo";
-import { Container } from "../../../components/root/container";
-import { Link } from "../../../components/Link";
+import { Typo } from "../../../components/ui/typo";
+import { Container } from "../../../components/ui/container";
+import { Link } from "../../../components/ui/Link";
 import * as SC from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,18 +11,20 @@ import {
   deletePost,
 } from "../../../redux/slices/postsSlice";
 
+const image = "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.jpg"
+
 export const DetailPostPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const posts = useSelector((state) => state.posts.posts.list);
-  const {user} = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const { post, loading } = useSelector((state) => state.posts.postForView);
 
   const [postForDelete, setPostForDelete] = useState(null);
 
-  const showEditAndDelBtn = list && user
+  const showEditAndDelBtn = posts && user;
 
   const onDeletePost = () => {
     dispatch(deletePost(postForDelete));
@@ -30,9 +32,7 @@ export const DetailPostPage = () => {
     navigate("/posts");
   };
 
-  const image =
-    post.image ||
-    "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.jpg";
+  const test = post?.image
 
   useEffect(() => {
     const intId = Number(id);
@@ -44,7 +44,7 @@ export const DetailPostPage = () => {
     } else {
       dispatch(getPostById(intId));
     }
-  }, [id, list, dispatch]);
+  }, [id, posts, dispatch]);
 
   return (
     <Container>
@@ -61,10 +61,10 @@ export const DetailPostPage = () => {
           </SC.Modal>
         </SC.ModalWrapper>
       ) : null}
-      {!loading ? (
+      {!loading && post ? (
         <>
           <Typo>{post.title}</Typo>
-          {post?.image ? (
+          {test ? (
             <SC.Image src={post.image} alt={post.title} />
           ) : (
             <SC.Image src={image} alt={post.title} />

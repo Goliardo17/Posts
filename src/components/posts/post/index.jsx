@@ -1,13 +1,16 @@
 import React from "react";
 import * as SC from "./styles"
 
+const image = "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.jpg"
+
 export const Post = ({ post }) => {
-    const image = post.image || "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.jpg"
+    const test = post?.image
+    // const image = post?.image ? post.image : "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.jpg"
 
     return (
     <SC.Post>
-        {post?.image ? <SC.Image src={post.image} /> : <SC.Image src={image} />}
-        <SC.Title>Some title</SC.Title>
-        <SC.DetailLink to={`posts/${post.id}`}>Read more.</SC.DetailLink>
+        {test ? <SC.Image src={post.image} /> : <SC.Image src={image} />}
+        <SC.Title>{post.title}</SC.Title>
+        <SC.DetailLink to={`${post.id}`}>Read more.</SC.DetailLink>
     </SC.Post>
 )}

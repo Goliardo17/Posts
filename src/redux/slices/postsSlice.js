@@ -27,7 +27,7 @@ export const postsSlice = createSlice({
   name: "posts",
   initialState: {
     posts: {
-      list: initionalPosts,
+      list: null,
       loading: false,
     },
     postForView: {
@@ -41,7 +41,7 @@ export const postsSlice = createSlice({
   },
   reducers: {
     editPosts: (state, action) => {
-      state.posts.list = state.posts.list.map((item) => {
+      state.posts.list = state.posts.list.map((post) => {
         if (post.id === action.payload.id) {
           return action.payload;
         }

@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container } from "../../components/ui/container";
 import { Form } from "../../components/ui/form";
 import { Field } from "../../components/ui/field";
 import { Input } from "../../components/ui/input";
+import { Typo } from "../../components/ui/typo"
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../redux/slices/authSlice"
 
 export const AuthPage = () => {
   const [formValues, setFormVlaues] = useState({
     email: "",
     password: "",
   });
+  console.log(formValues)
   const dispatch = useDispatch()
   const navigate = useNavigate();
 
@@ -39,23 +43,23 @@ export const AuthPage = () => {
     }
   };
 
-  const onChange = (name, value) => {
-    setFormVlaues({ ...formValues, [name]: value });
+  const changeValue = (key, value) => {
+    setFormVlaues({...formValues, [key]: value});
   };
 
-  const disabled = () => !formValues.email || !formValues.password;
+  const disabled = !formValues.email && !formValues.password;
 
   return (
     <Container>
       <Typo>Authorization</Typo>
-      <From>
+      <Form onSubmit={onSubmit}>
         <Field>
           <Input
             type="email"
             name="email"
             placeholder="Email"
             value={formValues.email}
-            onChange={(e) => onChange(e.target.email, e.target.value)}
+            onChange={(e) => changeValue(e.target.name, e.target.value)}
           />
         </Field>
         <Field>
@@ -64,13 +68,13 @@ export const AuthPage = () => {
             name="password"
             placeholder="Password"
             value={formValues.password}
-            onChange={(e) => onChange(e.target.password, e.target.value)}
+            onChange={(e) => changeValue(e.target.name, e.target.value)}
           />
         </Field>
         <button type="submit" disabled={disabled}>
           Enter
         </button>
-      </From>
+      </Form>
     </Container>
   );
 };

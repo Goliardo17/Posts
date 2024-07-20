@@ -1,5 +1,5 @@
-import React from "react";
-import { Container } from "../../components/root/container";
+import React, { useEffect }  from "react";
+import { Container } from "../../components/ui/container";
 import { Posts } from "../../components/posts";
 import * as SC from "./styled";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +13,7 @@ export const PostsPage = () => {
     if (!list) {
       dispatch(getPosts());
     }
-  }, [list, dispatch]);
+  }, []);
 
   return (
     <Container>

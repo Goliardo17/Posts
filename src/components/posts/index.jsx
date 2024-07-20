@@ -2,7 +2,7 @@ import React from "react";
 import { Post } from "./post";
 import * as SC from "./styled";
 
-export const Posts = ({ posts }) => (
+export const Posts = ({ posts }) => (posts ?
   <>
     <SC.Posts>
       {posts.map((post) => (
@@ -10,4 +10,5 @@ export const Posts = ({ posts }) => (
       ))}
     </SC.Posts>
   </>
+  : <>Loading...</>
 );

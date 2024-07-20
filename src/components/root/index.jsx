@@ -1,8 +1,9 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import * as SC from "./styles";
-import { Container } from "./container";
+import { Container } from "../ui/container";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { logout } from "../../redux/slices/authSlice";
 
 export const Root = () => {
@@ -24,7 +25,7 @@ export const Root = () => {
           {!user ? (
             <>
               <SC.MenuItem to={"/auth"}>Authtorization</SC.MenuItem>
-              <SC.MenuItem to={"/registation"}>Registration</SC.MenuItem>
+              <SC.MenuItem to={"/registration"}>Registration</SC.MenuItem>
             </>
           ) : (
             <>
