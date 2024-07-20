@@ -36,8 +36,8 @@ export const RegistrationPage = () => {
       localStorage.setItem("users", JSON.stringify(users));
       navigate('/auth')
       alert('Registration complete')
-    } catch (e) {
-      console.error(e);
+    } catch (er) {
+      console.error(er);
     }
   };
 
@@ -63,6 +63,8 @@ export const RegistrationPage = () => {
             value={formValues.name}
             onChange={(e) => onChange(e.target.name, e.target.value)}
           />
+          </Field>
+          <Field>
           <Input
             type="text"
             name="surname"
@@ -70,6 +72,8 @@ export const RegistrationPage = () => {
             value={formValues.surname}
             onChange={(e) => onChange(e.target.surname, e.target.value)}
           />
+          </Field>
+          <Field>
           <Input
             type="email"
             name="email"
@@ -77,6 +81,8 @@ export const RegistrationPage = () => {
             value={formValues.email}
             onChange={(e) => onChange(e.target.email, e.target.value)}
           />
+          </Field>
+          <Field>
           <Input
             type="password"
             name="password"
@@ -84,10 +90,10 @@ export const RegistrationPage = () => {
             value={formValues.password}
             onChange={(e) => onChange(e.target.password, e.target.value)}
           />
+          </Field>
           <button type="submit" disabled={disabled}>
             Registrate
           </button>
-        </Field>
       </Form>
     </Container>
   );

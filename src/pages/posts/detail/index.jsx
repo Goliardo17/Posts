@@ -17,9 +17,12 @@ export const DetailPostPage = () => {
   const navigate = useNavigate();
 
   const posts = useSelector((state) => state.posts.posts.list);
+  const {user} = useSelector((state) => state.auth);
   const { post, loading } = useSelector((state) => state.posts.postForView);
 
   const [postForDelete, setPostForDelete] = useState(null);
+
+  const showEditAndDelBtn = list && user
 
   const onDeletePost = () => {
     dispatch(deletePost(postForDelete));
@@ -69,7 +72,7 @@ export const DetailPostPage = () => {
           <SC.Text>{post.text}</SC.Text>
           <div style={{ clear: "both" }}></div>
           <Link to="/posts">Back to posts</Link>
-          {list ? (
+          {showEditAndDelBtn ? (
             <>
               <Link to={`/posts/${id}/edit`}>Edit post</Link>
               <SC.DeleteButton onClick={() => setPostForDelete(post)}>
