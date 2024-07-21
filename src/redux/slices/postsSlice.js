@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { postApi } from "../../api/postsApi";
-import { initionalPosts } from "./constants/posts";
+import { postsSorting } from "./helpers/postsSort";
 
 export const getPostById = createAsyncThunk("posts/fetchById", async (id) => {
   const response = await postApi.fetchById(id);
@@ -11,37 +11,41 @@ export const getPostById = createAsyncThunk("posts/fetchById", async (id) => {
 export const getPosts = createAsyncThunk("posts/fetchPosts", async () => {
   const response = await postApi.fetchPosts();
 
-  return response;
+  return response
 });
-
-export const getFreshPosts = createAsyncThunk(
-  "posts/fetchFreshPosts",
-  async (limit) => {
-    const response = await postApi.fetchFreshPosts(limit);
-
-    return response;
-  }
-);
 
 export const postsSlice = createSlice({
   name: "posts",
   initialState: {
-    posts: {
+    allPosts: {
       list: null,
-      loading: false,
+      loading: true
     },
+    onPage: {
+      list: null,
+      maxPage: 0
+    },
+    userPosts: [],
     postForView: {
       post: null,
-      loading: false,
-    },
-    freshPosts: {
-      list: null,
-      loading: false,
-    },
+      loading: true
+    }
   },
   reducers: {
+    setPage: (state, action) => {
+      const {pageNumber, filter} = action.payload
+      const { list, loading } = state.allPosts
+      const firstElement = pageNumber * 10
+      const lastElement = firstElement + 10
+
+      if (!loading) {
+        const allPosts = [...list]
+        
+        state.onPage.list = filter ? allPosts.slice(firstElement, lastElement) : [...state.userPosts].slice(firstElement, lastElement)
+      }
+    },
     editPosts: (state, action) => {
-      state.posts.list = state.posts.list.map((post) => {
+      state.allPosts.list = state.allPosts.list.map((post) => {
         if (post.id === action.payload.id) {
           return action.payload;
         }
@@ -50,11 +54,20 @@ export const postsSlice = createSlice({
       });
     },
     addPost: (state, action) => {
+      const { list } = state.allPosts
+      const allList = list ? [...list] : []
+      const userPosts = [...state.userPosts] || []
+      const allPosts = [...userPosts, ...allList]
       const newPost = { ...action.payload };
-      newPost.id = new Date().getTime();
-      state.posts.list = state.posts.list
-        ? [newPost, ...state.posts.list]
-        : [newPost];
+      
+      newPost.id = allPosts.length ? allPosts[0].id + 1 : 101
+
+      allPosts.push(newPost)
+      userPosts.push(newPost)
+      
+      state.allPosts.list = postsSorting.sortById(allPosts)
+      state.userPosts = postsSorting.sortById(userPosts)
+      state.onPage.maxPage = Math.floor(allPosts.length/10) - 1
     },
     showPost: (state, action) => {
       state.postForView = {
@@ -63,7 +76,7 @@ export const postsSlice = createSlice({
       };
     },
     deletePost: (state, action) => {
-      state.posts.list = state.posts.list.filter((post) => post.id !== action.payload.id)
+      state.allPosts.list = state.allPosts.list.filter((post) => post.id !== action.payload.id)
       state.postForView = {
         post: null,
         loading: false
@@ -73,22 +86,15 @@ export const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getPosts.pending, (state) => {
-        state.posts = {
-          list: null,
-          loading: true,
-        };
+        state.allPosts.loading = true
       })
       .addCase(getPosts.fulfilled, (state, action) => {
-        state.posts = { list: action.payload, loading: false };
-      })
-      .addCase(getFreshPosts.pending, (state) => {
-        state.freshPosts = {
-          list: null,
-          loading: true,
-        };
-      })
-      .addCase(getFreshPosts.fulfilled, (state, action) => {
-        state.freshPosts = { list: action.payload, loading: false };
+        const newAllPosts = [...state.userPosts, ...action.payload]
+
+        state.allPosts.list = postsSorting.sortById(newAllPosts)
+        state.allPosts.loading = false
+        state.onPage.list = newAllPosts.slice(0, 10)
+        state.onPage.maxPage = Math.floor(newAllPosts.length / 10) - 1
       })
       .addCase(getPostById.pending, (state) => {
         state.postForView = {
@@ -105,6 +111,6 @@ export const postsSlice = createSlice({
   },
 });
 
-export const { editPosts, addPost, showPost, deletePost } = postsSlice.actions;
+export const { editPosts, addPost, showPost, deletePost, setPage } = postsSlice.actions;
 
 export default postsSlice.reducer;

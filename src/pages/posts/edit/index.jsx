@@ -1,18 +1,22 @@
 import React from "react";
 import { PostFrom } from "../components/PostForm";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { editPosts, getPostById } from "../../../redux/slices/postsSlice";
 
 export const EditPostPage = () => {
     const { id } = useParams()
-    const {list} = useSelector((state) => state.posts.posts)
+    const {list} = useSelector((state) => state.posts.allPosts)
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const onSubmitForm = (formValues) => dispatch(editPosts(formValues))
+    const onSubmitForm = (formValues) => {
+        dispatch(editPosts(formValues))
+        navigate(`/posts/${id}`)
+    }
 
-    if (list) {
+    if (!list) {
         return <>404</>
     }
 

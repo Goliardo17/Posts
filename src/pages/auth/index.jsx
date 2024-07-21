@@ -7,13 +7,13 @@ import { Typo } from "../../components/ui/typo"
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../redux/slices/authSlice"
+import { Button } from "../../components/ui/button";
 
 export const AuthPage = () => {
   const [formValues, setFormVlaues] = useState({
     email: "",
     password: "",
   });
-  console.log(formValues)
   const dispatch = useDispatch()
   const navigate = useNavigate();
 
@@ -71,9 +71,7 @@ export const AuthPage = () => {
             onChange={(e) => changeValue(e.target.name, e.target.value)}
           />
         </Field>
-        <button type="submit" disabled={disabled}>
-          Enter
-        </button>
+        <Button styled='common' label='Enter' type="submit" disabled={disabled}/>
       </Form>
     </Container>
   );

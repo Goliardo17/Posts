@@ -5,4 +5,5 @@ export const Posts = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
+    justify-content: center;
 `

@@ -1,3 +1,5 @@
 import styled from "styled-components";
 
-export const Typo = styled.h1``
+export const Typo = styled.h1`
+    text-align: center;
+`
