@@ -1,3 +1,5 @@
+const elementsOnPage = 10
+
 export const postApi = {
   fetchById: async (id) => {
     try {
@@ -23,11 +25,11 @@ export const postApi = {
   },
   fetchPosts: async () => {
     try {
-      return await fetch(`https://jsonplaceholder.typicode.com/posts?_sort=id&_order=desc&_limit=3`)
+      return await fetch(`https://jsonplaceholder.typicode.com/posts?_sort=id&_order=desc`)
         .then((response) => response.json())
         .then((posts) => posts);
     } catch (ex) {
       console.log(ex);
     }
-  },
+  }
 };

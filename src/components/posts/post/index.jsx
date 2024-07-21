@@ -5,12 +5,11 @@ const image = "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.
 
 export const Post = ({ post }) => {
     const test = post?.image
-    // const image = post?.image ? post.image : "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.jpg"
 
     return (
     <SC.Post>
         {test ? <SC.Image src={post.image} /> : <SC.Image src={image} />}
         <SC.Title>{post.title}</SC.Title>
-        <SC.DetailLink to={`${post.id}`}>Read more.</SC.DetailLink>
+        <SC.DetailLink to={`/posts/${post.id}`}>Read more...</SC.DetailLink>
     </SC.Post>
 )}

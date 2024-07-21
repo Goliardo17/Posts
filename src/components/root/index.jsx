@@ -5,6 +5,7 @@ import { Container } from "../ui/container";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { logout } from "../../redux/slices/authSlice";
+import { Button } from "../ui/button";
 
 export const Root = () => {
   const { user } = useSelector((state) => state.auth);
@@ -30,7 +31,7 @@ export const Root = () => {
           ) : (
             <>
               <SC.MenuItem to={"/posts/add"}>Create post</SC.MenuItem>
-              <button onClick={() => exitUser()}>Exit</button>
+              <Button styled='common' label='Exit' onClick={() => exitUser()}/>
             </>
           )}
         </SC.Menu>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form } from "../../../../components/ui/form";
 import { Field } from "../../../../components/ui/field";
 import { Input } from "../../../../components/ui/input";
+import { Button } from "../../../../components/ui/button"
 import * as SC from "./styles";
 import { Container } from "../../../../components/ui/container";
 import { Typo } from "../../../../components/ui/typo";
@@ -45,9 +46,7 @@ export const PostFrom = ({ title, onSubmitForm, defaultValues }) => {
             onChange={(e) => onChange(e.target.name, e.target.value)}
           />
         </Field>
-        <button type="submit" disabled={disabled}>
-          Save
-        </button>
+        <Button styled='save' label='Save' type="submit" disabled={disabled}/>
       </Form>
     </Container>
   );

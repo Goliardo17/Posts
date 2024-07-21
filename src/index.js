@@ -12,6 +12,7 @@ import { AuthPage } from './pages/auth/index.jsx';
 import { RegistrationPage } from './pages/registration/index.jsx';
 import { Provider } from 'react-redux';
 import store from './redux/store.js';
+import "./index.css"
 
 const router = createBrowserRouter([
   {

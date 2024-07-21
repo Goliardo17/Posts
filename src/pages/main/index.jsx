@@ -4,27 +4,28 @@ import { Container } from "../../components/ui/container";
 import * as SC from './styled'
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../../redux/slices/postsSlice";
+import { Loader } from "../../components/ui/loader";
 
 export const MainPage = () => {
-  const {list, loading} = useSelector((state) => state.posts.posts)
+  const {list, loading} = useSelector((state) => state.posts.allPosts)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (!list) {
+    if (loading) {
       dispatch(getPosts())
     }
   }, [])
 
   return (
-    <Container>
+    <>
       {
         !loading ?
-        <>
+        <Container>
           <SC.Title>Posts</SC.Title>
-          <Posts posts={list}/>
-        </>
-        : null
+          <Posts posts={list.slice(0, 3)}/>
+          </Container>
+        : <Loader/>
       }
-    </Container>
-  );
+    </>
+  )
 }

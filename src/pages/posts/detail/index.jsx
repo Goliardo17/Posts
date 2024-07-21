@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Typo } from "../../../components/ui/typo";
 import { Container } from "../../../components/ui/container";
+import { Button } from "../../../components/ui/button";
 import { Link } from "../../../components/ui/Link";
+import { Modal } from "../../../components/ui/modal";
 import * as SC from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,15 +12,17 @@ import {
   showPost,
   deletePost,
 } from "../../../redux/slices/postsSlice";
+import { Loader } from "../../../components/ui/loader";
 
-const image = "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.jpg"
+const image =
+  "https://img.razrisyika.ru/kart/20/1200/77417-zhivotny-i-zverey-3.jpg";
 
 export const DetailPostPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const posts = useSelector((state) => state.posts.posts.list);
+  const posts = useSelector((state) => state.posts.allPosts.list);
   const { user } = useSelector((state) => state.auth);
   const { post, loading } = useSelector((state) => state.posts.postForView);
 
@@ -32,7 +36,7 @@ export const DetailPostPage = () => {
     navigate("/posts");
   };
 
-  const test = post?.image
+  const test = post?.image;
 
   useEffect(() => {
     const intId = Number(id);
@@ -49,17 +53,13 @@ export const DetailPostPage = () => {
   return (
     <Container>
       {postForDelete ? (
-        <SC.ModalWrapper>
-          <SC.Modal>
-            <SC.ModalText>Are you shore?</SC.ModalText>
-            <SC.ModalContent>
-              <SC.DeleteButton onClick={() => onDeletePost()}>
-                Yes
-              </SC.DeleteButton>
-              <button onClick={() => setPostForDelete(null)}>No</button>
-            </SC.ModalContent>
-          </SC.Modal>
-        </SC.ModalWrapper>
+        <Modal>
+          <Typo>Are you shore?</Typo>
+          <SC.ButtonWrapper>
+            <Button styled='delete' label='Yes' onClick={() => onDeletePost()}/>
+            <Button styled='save' label='No' onClick={() => setPostForDelete(null)}/>
+          </SC.ButtonWrapper>
+        </Modal>
       ) : null}
       {!loading && post ? (
         <>
@@ -75,14 +75,12 @@ export const DetailPostPage = () => {
           {showEditAndDelBtn ? (
             <>
               <Link to={`/posts/${id}/edit`}>Edit post</Link>
-              <SC.DeleteButton onClick={() => setPostForDelete(post)}>
-                Delete post
-              </SC.DeleteButton>
+              <Button styled='delete' label='Delete post' onClick={() => setPostForDelete(post)}/>
             </>
           ) : null}
         </>
       ) : (
-        <>Loading...</>
+        <Loader/>
       )}
     </Container>
   );
