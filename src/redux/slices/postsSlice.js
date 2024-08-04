@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { postApi } from "../../api/postsApi";
-import { postsSorting } from "./helpers/postsSort";
 
 export const getPostById = createAsyncThunk("posts/fetchById", async (id) => {
   const response = await postApi.fetchById(id);
@@ -19,16 +18,16 @@ export const postsSlice = createSlice({
   initialState: {
     allPosts: {
       list: null,
-      loading: true
+      loading: false,
+      maxPage: 0
     },
     onPage: {
       list: null,
-      maxPage: 0
     },
     userPosts: [],
     postForView: {
       post: null,
-      loading: true
+      loading: false
     }
   },
   reducers: {
@@ -65,9 +64,7 @@ export const postsSlice = createSlice({
       allPosts.push(newPost)
       userPosts.push(newPost)
       
-      state.allPosts.list = postsSorting.sortById(allPosts)
-      state.userPosts = postsSorting.sortById(userPosts)
-      state.onPage.maxPage = Math.floor(allPosts.length/10) - 1
+      state.allPosts.maxPage = Math.floor(allPosts.length/10) - 1
     },
     showPost: (state, action) => {
       state.postForView = {
@@ -91,10 +88,9 @@ export const postsSlice = createSlice({
       .addCase(getPosts.fulfilled, (state, action) => {
         const newAllPosts = [...state.userPosts, ...action.payload]
 
-        state.allPosts.list = postsSorting.sortById(newAllPosts)
         state.allPosts.loading = false
         state.onPage.list = newAllPosts.slice(0, 10)
-        state.onPage.maxPage = Math.floor(newAllPosts.length / 10) - 1
+        state.allPosts.maxPage = Math.floor(newAllPosts.length / 10) - 1
       })
       .addCase(getPostById.pending, (state) => {
         state.postForView = {
