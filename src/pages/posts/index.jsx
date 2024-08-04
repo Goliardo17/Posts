@@ -9,39 +9,38 @@ import { Loader } from "../../components/ui/loader";
 
 export const PostsPage = () => {
   const [pageNumber, setPageNumber] = useState(0);
-  const [filter, setFilter] = useState(true)
-  const { loading } = useSelector((state) => state.posts.allPosts);
-  const { list, maxPage } = useSelector((state) => state.posts.onPage);
+  const [filter, setFilter] = useState(true);
+  const allPost = useSelector((state) => state.posts.allPosts);
+  const onPage = useSelector((state) => state.posts.onPage);
   const dispatch = useDispatch();
 
   const incrementPage = () => {
     const newPageNumber = pageNumber + 1;
-    console.log(newPageNumber, filter)
-    dispatch(setPage({pageNumber: newPageNumber, filter}));
+    dispatch(setPage({ pageNumber: newPageNumber, filter }));
     setPageNumber(newPageNumber);
   };
 
   const decrementPage = () => {
     const newPageNumber = pageNumber - 1;
-    dispatch(setPage({pageNumber: newPageNumber, filter}));
+    dispatch(setPage({ pageNumber: newPageNumber, filter }));
     setPageNumber(newPageNumber);
   };
 
   const changeFilter = () => {
-    setFilter(!filter)
-    dispatch(setPage({pageNumber, filter: !filter}));
-  }
+    setFilter(!filter);
+    dispatch(setPage({ pageNumber, filter: !filter }));
+  };
 
   useEffect(() => {
-    if (loading) {
+    if (!allPost.list) {
       dispatch(getPosts());
     }
-    dispatch(setPage({pageNumber, filter}));
+    dispatch(setPage({ pageNumber, filter }));
   }, []);
 
   return (
     <>
-      {!loading && list ? (
+      {!allPost.loading && onPage.list ? (
         <Container>
           <SC.Title>Posts</SC.Title>
           <SC.ButtonWrapper>
@@ -54,19 +53,25 @@ export const PostsPage = () => {
           <SC.ButtonWrapper>
             <Button
               styled="common"
-              label="after"
+              label="before"
               onClick={() => decrementPage()}
-              disabled={pageNumber && list.length ? false : true}
+              disabled={pageNumber && onPage.list.length ? false : true}
             />
             {pageNumber + 1}
             <Button
               styled="common"
-              label="before"
+              label="after"
               onClick={() => incrementPage()}
-              disabled={pageNumber !== maxPage && list.length ? false : true}
+              disabled={pageNumber !== allPost.maxPage && onPage.list.length ? false : true}
             />
           </SC.ButtonWrapper>
-          {list.length ? <Posts posts={list} /> : <Container>sorry, but the user has not yet written a single post.</Container>}
+          {onPage.list.length ? (
+            <Posts posts={onPage.list} />
+          ) : (
+            <Container>
+              sorry, but the user has not yet written a single post.
+            </Container>
+          )}
         </Container>
       ) : (
         <Loader />
